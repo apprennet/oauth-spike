@@ -12,9 +12,12 @@
   "dependencies": {
     "body-parser": "^1.14.2",
     "cookie-parser": "^1.4.1",
+    "cors": "^2.7.1",
     "csurf": "^1.8.3",
     "express": "^4.13.4",
     "express-handlebars": "^3.0.0",
-    "method-override": "^2.3.5"
+    "jsonwebtoken": "^5.5.4",
+    "method-override": "^2.3.5",
+    "oauth2-server": "^2.4.1"
   }
 }

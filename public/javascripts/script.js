@@ -1,13 +1,14 @@
-$(document).ready(function() {
+$(document).on('submit', 'form', function(event) {
 
-  var csrf = $($("input[type='hidden']")[0]).attr('value');
+  event.preventDefault();
+
+  var token = $($("input[type='hidden']")[0]).attr('value');
+  var username = $('#username').val();
+  var password = $('#password').val()
 
   $.ajax({
     method: 'POST',
-    url: 'http://localhost:8082/new',
-    data: { body: 'asdf'},
-    headers: {
-      'csrf-token': csrf
-    }
+    url: 'http://localhost:8082/login',
+    data: { username: username, password: password, clientToken: token},
   });
-})
+});
