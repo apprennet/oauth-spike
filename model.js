@@ -44,6 +44,7 @@ export default {
       return callback(null, true);
     }
     // Throw error if grant type is not allowed for this client.
+    // This can be used to allow grant type per client.
     callback(true);
   },
 
