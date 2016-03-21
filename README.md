@@ -14,10 +14,12 @@ The app provides a login form that kicks off a login process in `public/javascri
 
 You can simulate a successful login by using these credentials:
 
-`username`: gob@example.com
+`username`: gob
 
 `password`: testpass
 
 There is also a button to kick off a request to a protected resource. This should ONLY work after logging in with the above credentials.
 
 All success and error responses are logged to the console.
+
+This reference application currently does not handle errors realistically. All OAuth errors throw exceptions which propagate to a 500 error. The stack trace is sent down to the client.

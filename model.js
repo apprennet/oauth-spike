@@ -4,7 +4,7 @@ const secret = 'shhh';
 const users = [
   {
     id: 123,
-    username: 'gob@example.com',
+    username: 'gob',
     password: 'testpass'
   }
 ]
@@ -17,11 +17,12 @@ const clients = [
 
 export default {
   getAccessToken(bearerToken, callback) {
+    // Access token is stored inside the JWT access token.
     const decoded = jwt.verify(bearerToken, secret);
     callback(null, {
       accessToken: bearerToken,
       clientId: decoded.clientId,
-      expires: decoded.exp,
+      expires: new Date(decoded.exp * 1000),
       userId: decoded.userId
     });
   },
@@ -50,9 +51,8 @@ export default {
     const accessToken = jwt.sign(
       { userId: 1234, clientId: 123 },
       secret,
-      { expiresIn: '60m' }
+      { expiresIn: 86400 }
     );
-
     callback(null, accessToken);
   },
 
@@ -66,7 +66,6 @@ export default {
     if (!user || user.password !== password) {
       return callback(null);
     }
-
     callback(null, {
       user
     });

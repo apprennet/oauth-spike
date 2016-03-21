@@ -12,7 +12,8 @@ var app = express();
 app.oauth = oauthserver({
   model: model,
   grants: ['password'],
-  debug: true
+  debug: true,
+  accessTokenLifetime: 86400
 });
 
 // static files
@@ -30,6 +31,7 @@ app.get('/test', (req, res) => {
 });
 
 app.get('/protected', app.oauth.authorise(), (req, res) => {
+  console.log(req.get('Authorization'))
   res.send('you can see the protected resource');
 });
 
