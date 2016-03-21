@@ -2,16 +2,15 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import jwt from 'jsonwebtoken';
 import oauthserver from 'oauth2-server';
-import cors from 'cors';
 
+// OAuth model provided for node-oauth2-server API https://github.com/oauthjs/node-oauth2-server/tree/v2.2.1#model-specification
 import model from './model';
 
 var app = express();
 
-app.use(cors());
-
+// node-oauth2-server server options https://github.com/oauthjs/node-oauth2-server/tree/v2.2.1#quick-start
 app.oauth = oauthserver({
-  model: require('./model'),
+  model: model,
   grants: ['password'],
   debug: true
 });
@@ -23,17 +22,26 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const secret = 'shhh';
-
 // Routes
-app.all('/oauth/token', app.oauth.grant());
+app.all('/oauth/access-token', app.oauth.grant());
 
-app.get('/', (req, res) => {
+app.get('/test', (req, res) => {
   res.send('working');
 });
 
 app.get('/protected', app.oauth.authorise(), (req, res) => {
-  res.send('protected resource');
+  res.send('you can see the protected resource');
+});
+
+// 404s
+app.use((req, res) => {
+  res.status(404).send('404 :(')
+});
+
+// 500s
+app.use((err, req, res, next) => {
+  console.log(err.stack);
+  res.status(500).send('500 :( '  + err.stack);
 });
 
 app.listen(8082);
